@@ -11,7 +11,7 @@ enum transmission{
 }
 
 interface vehicle{
-    id:number, //Id can be optional ?
+    id?:number, //Id can be optional ?
     plateNumber:string,
     model:string,
     transmissionType:transmission
@@ -20,20 +20,40 @@ interface vehicle{
 class vehicleManagement{
 
     public vehicles:vehicle[] = [];
+
+    constructor(){
+        //Initialize the id
+        this.vehicles.push({id:1, plateNumber:'RAA556O', model:'Carina', transmissionType:transmission.AUTOMATIC});
+    }
     addVehicle(vehicl:vehicle):void{
-        
-        //Check whether the vehicle exist before adding it
-        if(this.isVehichleAvailable(vehicl.plateNumber)){
-            console.log(`vehicle with plate number: ${vehicl.plateNumber} already exists \n`);
-            return;
-            
+
+        if(vehicl.id){
+            let isVehicleExist = this.vehicles.find((vehi:vehicle)=>vehi.id===id);
+            let id:number=this.generateId();
+            while(isVehicleExist){
+                id = this.generateId();
+                isVehicleExist = this.vehicles.find((vehicl:vehicle)=>vehicl.id===id);
+            }
+            vehicl.id=id;
+            this.vehicles.push(vehicl);
         }
         else{
-            //Add the vehicle
-            vehicl.id =this.generateId();
+            vehicl.id=this.generateId();
             this.vehicles.push(vehicl);
-            console.log(`The vehiche with plate number: ${vehicl.plateNumber} \n`);       
         }
+        
+        //Check whether the vehicle exist before adding it
+        // if(this.isVehichleAvailable(vehicl.plateNumber)){
+        //     console.log(`vehicle with plate number: ${vehicl.plateNumber} already exists \n`);
+        //     return;
+            
+        // }
+        // else{
+        //     //Add the vehicle
+        //     vehicl.id =this.generateId();
+        //     this.vehicles.push(vehicl);
+        //     console.log(`The vehiche with plate number: ${vehicl.plateNumber} \n`);       
+        // }
 
     }
 
